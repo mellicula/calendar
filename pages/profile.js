@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
+import Link from 'next/link';
 import {useEffect, useState } from 'react';
 
 export default function ProfilePage() {
@@ -64,7 +65,10 @@ export default function ProfilePage() {
         onChange={e => setProfile({ ...profile, ical_url: e.target.value })}
       /><br /><br />
 
-      <button onClick={updateProfile}>Save Profile</button>
+      <button onClick={updateProfile}>Save Profile</button>&nbsp;
+      <Link href=".">
+        <button>Home</button>
+      </Link>
     </div>
   );
 }
