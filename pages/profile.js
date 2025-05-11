@@ -168,7 +168,7 @@ export default function ProfilePage() {
       <h2> Friends </h2>
       <input
         type="text"
-        placeholder="friend email"
+        placeholder="friend display name"
         value={friendEmail}
         onChange={e => setFriendEmail(e.target.value)}
       /><br />
@@ -183,8 +183,6 @@ export default function ProfilePage() {
           return (
             <li key={`${conn.user1}-${conn.user2}`} style={{ marginBottom: '10px' }}>
               Friend: {friendNames[friendId]} <br />
-              Status: {conn.status} <br />
-
               {isPending && !isSender && (
                 <>
                   <button onClick={() => acceptRequest(conn)}>Accept</button>&nbsp;
