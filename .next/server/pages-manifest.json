@@ -2,7 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
+  "/calendar": "pages/calendar.js",
   "/profile": "pages/profile.js",
-  "/calendar": "pages/calendar.js"
+  "/": "pages/index.js",
+  "/api/get-cal": "pages/api/get-cal.js"
 }
