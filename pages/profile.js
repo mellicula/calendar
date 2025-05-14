@@ -144,8 +144,8 @@ export default function ProfilePage() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h2>My Profile</h2>
+    <div style={{ padding: '2rem'}}>
+      <h1>🌹🍏 Your Profile 🍏🌹</h1>
 
       <input
         type="text"
@@ -165,7 +165,7 @@ export default function ProfilePage() {
       <Link href=".">
         <button>Home</button>
       </Link>
-      <h2> Friends </h2>
+      <h2>Friends</h2>
       <input
         type="text"
         placeholder="friend display name"
@@ -174,15 +174,14 @@ export default function ProfilePage() {
       /><br />
       <button onClick={addFriend}>send request</button>&nbsp;
 
-      <ul>
+      <div>
         {connections.map(conn => {
           const friendId = conn.user1 === userId ? conn.user2 : conn.user1;
           const isSender = conn.initiator === userId;
           const isPending = conn.status === 'pending';
           const friendName = fetchName(friendId);
           return (
-            <li key={`${conn.user1}-${conn.user2}`} style={{ marginBottom: '10px' }}>
-              Friend: {friendNames[friendId]} <br />
+            <h3> 💥 {friendNames[friendId]} 💥 <br /> 
               {isPending && !isSender && (
                 <>
                   <button onClick={() => acceptRequest(conn)}>Accept</button>&nbsp;
@@ -200,10 +199,10 @@ export default function ProfilePage() {
                   <em>Connected</em>&nbsp;
                 </>
               )}
-            </li>
+            </h3>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }

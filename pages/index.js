@@ -171,8 +171,8 @@ export default function Home() {
   const availableFriends = Object.entries(allFriendNames);
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Welcome!</h1>
+    <div style={{ padding: '2rem'}}>
+      <h1>🪻🌻 Your Calendar 🪻🌻 </h1>
 
       {user ? (
         <>
