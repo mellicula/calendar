@@ -42,6 +42,23 @@ export default function CalendarWidget({ groupId, groupName }) {
     loadGroupMembers();
   }, [groupId]);
 
+  async function removeGroup() {
+    const confirmDelete = confirm(`Are you sure you want to delete group "${groupName}"?`);
+    if (!confirmDelete) return;
+
+    const { error } = await supabase
+      .from('groups')
+      .delete()
+      .eq('id', groupId);
+
+    if (error) {
+      alert('Failed to delete group: ' + error.message);
+    } else {
+      alert(`Group "${groupName}" deleted.`);
+      location.reload();  
+    }
+  }
+
   function filterByDate(events, selectedDate, skips) {
     return events.filter((vevent) => {
       const eventStart = vevent.getFirstPropertyValue("dtstart").toString().slice(0,10);
@@ -206,6 +223,11 @@ export default function CalendarWidget({ groupId, groupName }) {
           <table id={`timetable-${groupId}`} style={{ width: '100%', borderCollapse: 'collapse' }}/>
         </div>
       )}
+
+      <br></br>
+      <button onClick={removeGroup} style={{ color: 'red', marginLeft: '1rem' }}>
+        Delete Group
+      </button>
     </div>
   );
 }
