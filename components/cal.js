@@ -77,7 +77,8 @@ export default function CalendarWidget({ groupId, groupName }) {
     const cell = r && r.getElementsByTagName("td")[col];
     if (cell) {
       if (chck) cell.textContent = ev.getFirstPropertyValue("summary");
-      cell.style.backgroundImage = "linear-gradient(to right, purple, blue)";
+      cell.style.backgroundImage = "linear-gradient(to right, pink, pink)";
+      cell.style.backgroundImage = "linear-gradient(to left, steelblue, slateblue)";
       cell.style.color = "white";
     }
   }
