@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabaseClient';
 export default function CalendarWidget({ groupId, groupName }) {
   const [friends, setFriends] = useState([]);    // { name, attendsLectures, jcalData }
   const [date, setDate] = useState(null);
-  const [mode, setMode] = useState("events");        // 'events' | 'best'
+  const [mode, setMode] = useState("best");        // 'events' | 'best'
 
   useEffect(() => {
     if (!date) setDate(new Date().toISOString().split('T')[0]);
