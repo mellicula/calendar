@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabaseClient';
 export default function CalendarWidget({ groupId, groupName }) {
   const [friends, setFriends] = useState([]);    // { name, attendsLectures, jcalData }
   const [date, setDate] = useState(null);
-  const [mode, setMode] = useState(null);        // 'events' | 'best'
+  const [mode, setMode] = useState("events");        // 'events' | 'best'
 
   useEffect(() => {
     if (!date) setDate(new Date().toISOString().split('T')[0]);
@@ -115,23 +115,54 @@ export default function CalendarWidget({ groupId, groupName }) {
   }
 
   function whenToMeet() {
-    const FULL = (1<<12)-1;
-    const allAv = friends.map(f => {
-      let mask = FULL;
-      const evs = filterByDate(f.jcalData.getAllSubcomponents("vevent"), date, f.attendsLectures);
-      evs.forEach(evtComp => {
-        const ev = new ICAL.Event(evtComp);
-        const start = new Date(evtComp.getFirstPropertyValue("dtstart")).getHours();
-        for (let hr = start-8; hr < start-8+ev.duration.hours; hr++) {
-          mask &= ~(1<<hr);
+    const allAv = [];
+    const FULL = (1 << 12) - 1;
+
+    for (var i = 0; i < friends.length; i++) {
+      var friendsEvents = filterByDate(
+        friends[i].jcalData.getAllSubcomponents("vevent"),
+        date,
+        friends[i].attendsLectures
+      );
+
+      var availability = FULL;
+
+      for (var j = 0; j < friendsEvents.length; j++) {
+        const evntComp = friendsEvents[j];
+        const avent = new ICAL.Event(evntComp);
+
+        const start = new Date(evntComp.getFirstPropertyValue("dtstart")).getHours();
+        const dur = avent.duration.hours;
+
+        for (var hr = start - 8; hr < start - 8 + dur; hr++) {
+          availability &= ~(1 << hr);
         }
-      });
-      return mask;
-    });
-    let joint = FULL;
-    allAv.forEach(m=> joint &= m);
-    return Array.from({length:12},(_,i)=> i+8).filter(h=> joint & (1<<(h-8)));
+      }
+
+      allAv.push(availability);
+    }
+
+    var combined = FULL;
+    for (var i = 0; i < allAv.length; i++) {
+      combined &= allAv[i];
+    }
+
+    var times = [];
+    for (var hr = 8; hr < 20; hr++) {
+      if ((combined & (1 << (hr - 8))) !== 0) {
+        times.push(hr);
+      }
+    }
+
+    return times;
   }
+
+  function switchModes() {
+    mode === 'events' ? setMode('best') : setMode('events')
+  }
+
+
+
 
   return (
     <div style={{ border: '1px solid #ccc', padding: '1rem', margin: '1rem 0' }}>
@@ -145,8 +176,7 @@ export default function CalendarWidget({ groupId, groupName }) {
         />
       </label>
       {" "}
-      <button onClick={() => setMode('events')}>Show Events</button>
-      <button onClick={() => setMode('best')}>Best Times</button>
+      <button onClick={() => switchModes()}>Switch view</button>
 
       {mode === 'events' && (
         <div>
